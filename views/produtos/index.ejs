@@ -1,0 +1,74 @@
+<h1>Produtos<% if (typeof categoriaAtual !== 'undefined' && categoriaAtual) { %> — Categoria: <%= categoriaAtual.nome %><% } %><% if (typeof termoBusca !== 'undefined' && termoBusca) { %> — Busca: "<%= termoBusca %>"<% } %></h1>
+
+<a href="/produtos/novo">Novo produto</a> |
+<a href="/categorias">Categorias</a> |
+<a href="/categorias/novo">Nova categoria</a>
+
+<form action="/produtos" method="GET" style="margin: 12px 0;">
+    <label>Pesquisar por nome:</label>
+    <input
+        type="text"
+        name="busca"
+        placeholder="ex.: mouse"
+        value="<%= typeof termoBusca !== 'undefined' ? termoBusca : '' %>"
+    >
+
+    <label>Filtrar por categoria:</label>
+    <select name="categoriaId">
+        <option value="">Todas</option>
+        <% categorias.forEach(c => { %>
+            <option
+                value="<%= c.id %>"
+                <%= (typeof categoriaAtual !== 'undefined' && categoriaAtual && String(c.id) === String(categoriaAtual.id)) ? 'selected' : '' %>
+            ><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <button type="submit">Buscar</button>
+    <% if ((typeof categoriaAtual !== 'undefined' && categoriaAtual) || (typeof termoBusca !== 'undefined' && termoBusca)) { %>
+        <a href="/produtos">Limpar</a>
+    <% } %>
+</form>
+
+<% if (produtos.length === 0) { %>
+    <p>Nenhum produto encontrado<% if (typeof termoBusca !== 'undefined' && termoBusca) { %> para "<%= termoBusca %>"<% } %><% if (typeof categoriaAtual !== 'undefined' && categoriaAtual) { %> na categoria <%= categoriaAtual.nome %><% } %>.</p>
+<% } else { %>
+
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+    </tr>
+
+    <% produtos.forEach(p => { %>
+
+        <tr>
+            <td><%= p.nome %></td>
+            <td><%= p.preco %></td>
+            <td><%= p.quantidade %></td>
+            <td><%= p.Categoria ? p.Categoria.nome : '—' %></td>
+
+            <td>
+                <a href="/produtos/<%= p.id %>/editar">
+                    Editar
+                </a>
+
+                <form
+                    action="/produtos/<%= p.id %>/deletar"
+                    method="POST"
+                    style="display:inline"
+                >
+                    <button type="submit">
+                        Excluir
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+    <% }) %>
+
+</table>
+
+<% } %>

@@ -1,0 +1,38 @@
+<h1>Novo produto</h1>
+
+<% if (categorias.length === 0) { %>
+    <p>Nenhuma categoria cadastrada. <a href="/categorias/novo">Cadastre uma categoria</a> primeiro.</p>
+<% } %>
+
+<form action="/produtos" method="POST">
+
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
+
+    <br>
+
+    <label>Preço:</label>
+    <input type="number" name="preco" step="0.01" required>
+
+    <br>
+
+    <label>Quantidade:</label>
+    <input type="number" name="quantidade" value="0">
+
+    <br>
+
+    <label>Categoria:</label>
+    <select name="categoriaId" required>
+        <% categorias.forEach(c => { %>
+            <option value="<%= c.id %>"><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <a href="/categorias/novo">Nova categoria</a>
+
+    <br>
+
+    <button type="submit">
+        Salvar
+    </button>
+
+</form>

@@ -1,0 +1,52 @@
+<h1>Editar produto</h1>
+
+<form action="/produtos/<%= produto.id %>" method="POST">
+
+    <label>Nome:</label>
+    <input
+        type="text"
+        name="nome"
+        required
+        value="<%= produto.nome %>"
+    >
+
+    <br>
+
+    <label>Preço:</label>
+    <input
+        type="number"
+        name="preco"
+        step="0.01"
+        required
+        value="<%= produto.preco %>"
+    >
+
+    <br>
+
+    <label>Quantidade:</label>
+    <input
+        type="number"
+        name="quantidade"
+        value="<%= produto.quantidade %>"
+    >
+
+    <br>
+
+    <label>Categoria:</label>
+    <select name="categoriaId" required>
+        <% categorias.forEach(c => { %>
+            <option
+                value="<%= c.id %>"
+                <%= String(c.id) === String(produto.categoriaId) ? 'selected' : '' %>
+            ><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <a href="/categorias/novo">Nova categoria</a>
+
+    <br>
+
+    <button type="submit">
+        Atualizar
+    </button>
+
+</form>
