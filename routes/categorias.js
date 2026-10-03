@@ -53,10 +53,7 @@ router.post('/:id/deletar', async (req, res) => {
         id: req.params.id
       }
     });
-  } catch (err) {
-    // RESTRICT: não permite excluir categoria com produtos vinculados.
-    // Volta para a lista mesmo em caso de erro de FK.
-  }
+  } catch (err) {}
 
   res.redirect('/categorias');
 });

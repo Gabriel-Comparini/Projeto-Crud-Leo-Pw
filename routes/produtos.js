@@ -4,7 +4,6 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const { Produto, Categoria } = require('../models');
 
-// Escapa %, _ e \ para não virarem curinga acidental no LIKE.
 function escapeLike(str) {
   return str.replace(/[\\%_]/g, (m) => '\\' + m);
 }
@@ -14,8 +13,6 @@ router.get('/', async (req, res) => {
   const { categoriaId } = req.query;
   const termoBusca = typeof req.query.busca === 'string' ? req.query.busca.trim() : '';
 
-  // Filtros opcionais via query: /produtos?categoriaId=1&busca=mouse
-  // (o formulário da página usa esse formato)
   const where = {};
 
   let categoriaAtual = null;
@@ -29,8 +26,6 @@ router.get('/', async (req, res) => {
     where.categoriaId = categoriaId;
   }
 
-  // Desafio extra: pesquisa por nome com LIKE '%termo%'.
-  // SQLite LIKE já é case-insensitive para ASCII: "mouse" acha "Mouse".
   if (termoBusca) {
     where.nome = { [Op.like]: `%${escapeLike(termoBusca)}%` };
   }
@@ -57,10 +52,6 @@ router.get('/novo', async (req, res) => {
   });
 });
 
-// Desafio 2: listar produtos de uma categoria.
-// Ex.: /produtos/categoria/1 -> só produtos com categoriaId = 1.
-// Declarada antes de /:id/editar para não haver ambiguidade.
-// Aceita ?busca= opcional para combinar categoria + pesquisa.
 router.get('/categoria/:id', async (req, res) => {
   const categoriaAtual = await Categoria.findByPk(req.params.id);
 

@@ -12,11 +12,8 @@ const categoriasRouter = require('./routes/categorias');
 const { sequelize } = require('./models');
 
 var app = express();
-// Sem force:true para não apagar os dados a cada restart.
-// Cria as tabelas (Categoria, Produto) se ainda não existirem.
 sequelize.sync();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -31,18 +28,14 @@ app.use('/produtos', produtosRouter);
 app.use('/categorias', categoriasRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });

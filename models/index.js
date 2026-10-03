@@ -36,9 +36,6 @@ const Produto = sequelize.define('Produto', {
   }
 });
 
-// Associação: uma Categoria tem muitos Produtos,
-// um Produto pertence a uma Categoria (FK categoriaId).
-// O `as` fixa o apelido (evita que o Sequelize use "Categorium").
 Categoria.hasMany(Produto, {
   foreignKey: {
     name: 'categoriaId',
